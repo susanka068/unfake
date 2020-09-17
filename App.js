@@ -1,21 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+// In App.js in a new project
+import * as React from "react";
+import HomeScreen from "./Screens/HomeScreen";
+import SearchScreen from "./Screens/SearchScreen";
+import ResultScreen from "./Screens/ResultScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Button, Image } from "react-native";
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start woing on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="UnFake"
+          component={HomeScreen}
+          options={{
+            headerTitle: "",
+            headerLeft: () => (
+              <Image
+                source={require("./assets/unfake.png")}
+                style={{ height: 80, width: 100 }}
+              />
+            ),
+          }}
+        />
+        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen name="Result" component={ResultScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
