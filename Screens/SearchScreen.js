@@ -1,35 +1,54 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Button, Text } from "react-native";
-import { Item, Input } from "native-base";
+import { View, StyleSheet } from "react-native";
+import { Item, Input, Button, Text, Spinner } from "native-base";
+import axios from "axios";
 
 function SearchScreen({ navigation }) {
   const [query, setQuery] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  //const [render, setRender] = useState("fake");
   return (
     <View style={styles.container}>
       <Item rounded style={styles.textBox}>
         <Input
+          ref={(input) => {
+            this.textInput = input;
+          }}
           onChangeText={(text) => setQuery(text)}
           placeholder="Copy Your Text Here..."
         />
       </Item>
       <View style={styles.ButtoonGroupStyle}>
         <Button
-          color="red"
+          danger
           style={styles.clearButton}
-          title="Clear"
-          onPress={() => navigation.push("Search")}
-        />
+          onPress={() => {
+            this.textInput._root.clear();
+          }}
+        >
+          <Text style={styles.textStyle}>CLEAR</Text>
+        </Button>
         <Button
-          color="black"
+          dark
           style={styles.checkButton}
-          title="Check"
-          onPress={() =>
-            navigation.push("Result", {
-              query,
-            })
-          }
-        />
+          onPress={async () => {
+            setLoading(true),
+              axios
+                .post("https://unfake.herokuapp.com/detect", null, {
+                  params: { q: query },
+                })
+                .then((response) => {
+                  setLoading(false),
+                    navigation.push("Result", {
+                      query,
+                      val: response.data.msg,
+                    });
+                })
+                .catch((err) => console.warn(err));
+          }}
+        >
+          <Text style={styles.textStyle}>CHECK</Text>
+        </Button>
       </View>
     </View>
   );
@@ -47,6 +66,10 @@ const styles = StyleSheet.create({
     width: 320,
     position: "relative",
     left: 19,
+    borderBottomEndRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomStartRadius: 10,
   },
   ButtoonGroupStyle: {
     flexDirection: "row",
@@ -54,9 +77,16 @@ const styles = StyleSheet.create({
   },
   clearButton: {
     padding: 10,
+    height: 60,
+    width: 120,
   },
   checkButton: {
     padding: 10,
+    height: 60,
+    width: 120,
+  },
+  textStyle: {
+    fontSize: 20,
   },
 });
 
