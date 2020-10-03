@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Button, Text } from "react-native";
-//import  { Text } from 'native-base'
 
 function ResultScreen({ route, navigation }) {
   const { query, val } = route.params;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Item, Input, Button, Text, Spinner } from "native-base";
+import { Item, Input, Button, Text } from "native-base";
 import axios from "axios";
 
 function SearchScreen({ navigation }) {
